@@ -21,6 +21,7 @@ const Preview = ({
   themeName,
   textColor = "#ffffff",
   boxColor = "#64748b",
+  onLinkViewed,
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,6 +64,22 @@ const Preview = ({
   }, [links]);
 
   const previewData = links ?? data;
+
+  const handleLinkView = async (linkId) => {
+    try {
+      const response = await api.post(`/add-links/${linkId}/view`);
+      const updatedLink = response.data;
+
+      setData((currentLinks) =>
+        currentLinks.map((link) =>
+          link.id === updatedLink.id ? updatedLink : link,
+        ),
+      );
+      onLinkViewed?.(updatedLink);
+    } catch (error) {
+      console.error("Error recording link view:", error);
+    }
+  };
 
   // loading mentain
 
@@ -171,6 +188,7 @@ const Preview = ({
                       />
                       <a
                         href={item.URL}
+                        onClick={() => handleLinkView(item.id)}
                         className="w-full px-14 text-center"
                         target="_blank"
                         rel="noopener noreferrer"

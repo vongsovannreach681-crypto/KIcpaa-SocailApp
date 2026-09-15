@@ -1,7 +1,7 @@
 import React from "react";
 import Preview from "./Preview";
 
-const Display = ({ links, themeImage, themeName, textColor, boxColor }) => {
+const Display = ({ links, themeImage, themeName, textColor, boxColor, onLinkViewed }) => {
   return (
     <div>
       {/* <img className='-mt-10 sticky top-40'
@@ -12,6 +12,7 @@ const Display = ({ links, themeImage, themeName, textColor, boxColor }) => {
         themeName={themeName}
         textColor={textColor}
         boxColor={boxColor}
+        onLinkViewed={onLinkViewed}
       />
     </div>
   );

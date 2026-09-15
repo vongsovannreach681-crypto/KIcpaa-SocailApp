@@ -107,18 +107,44 @@ const Setting = () => {
   };
 
   if (loading) {
-    return <div className="my-5 px-5 text-sm text-slate-500">Loading profile...</div>;
+    return (
+      <>
+        <section className="my-5 w-full rounded-md bg-white px-8 py-8 shadow-sm poppins">
+          <h1 className="mb-8 text-2xl text-xl font-semibold text-blue-900 border-b-3 pb-3">
+            {" "}
+            Setting
+          </h1>
+
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 animate-pulse">
+            <div className="min-w-0 space-y-6">
+              <div className="h-11 w-full rounded-sm bg-gray-400" />
+              <div className="h-11 w-full rounded-sm bg-gray-400" />
+            </div>
+
+            <div className="h-24 w-24 rounded-sm bg-gray-400" />
+          </div>
+
+          <div className="mt-6 flex items-center gap-4 animate-pulse">
+            <div className="h-9 w-32 rounded-sm bg-gray-400" />
+          </div>
+        </section>
+      </>
+    );
   }
 
   if (error) {
     return <div className="my-5 px-5 text-sm text-red-600">{error}</div>;
   }
 
-  const displayImage = imagePreview || (!imageFailed ? setting?.image_url : null);
+  const displayImage =
+    imagePreview || (!imageFailed ? setting?.image_url : null);
 
   return (
     <section className="my-5 w-full rounded-md bg-white px-8 py-8 shadow-sm poppins">
-      <h1 className="mb-8 text-2xl text-xl font-semibold text-blue-900 border-b-3  pb-3"> Setting</h1>
+      <h1 className="mb-8 text-2xl text-xl font-semibold text-blue-900 border-b-3  pb-3">
+        {" "}
+        Setting
+      </h1>
 
       {!setting ? (
         <p className="text-sm text-slate-500">No profile settings available.</p>
@@ -154,7 +180,10 @@ const Setting = () => {
                   onError={() => setImageFailed(true)}
                 />
               ) : (
-                <span className="text-2xl font-semibold text-slate-400" aria-hidden="true">
+                <span
+                  className="text-2xl font-semibold text-slate-400"
+                  aria-hidden="true"
+                >
                   {setting.title?.charAt(0)?.toUpperCase() || "P"}
                 </span>
               )}
@@ -181,7 +210,9 @@ const Setting = () => {
               {saving ? "Saving..." : "Save changes"}
             </button>
 
-            {saveError && <span className="text-sm text-red-600">{saveError}</span>}
+            {saveError && (
+              <span className="text-sm text-red-600">{saveError}</span>
+            )}
             {saved && !saveError && (
               <span className="text-sm text-emerald-600">Saved.</span>
             )}

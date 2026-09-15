@@ -58,6 +58,13 @@ const Container = () => {
           themeName={themeName}
           textColor={textColor}
           boxColor={boxColor}
+          onLinkViewed={(updatedLink) =>
+            setLinks((currentLinks) =>
+              currentLinks.map((link) =>
+                link.id === updatedLink.id ? updatedLink : link,
+              ),
+            )
+          }
         />
       </div>
       <div className="editor-links-column">

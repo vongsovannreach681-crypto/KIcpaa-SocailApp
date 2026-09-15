@@ -78,6 +78,24 @@ const ListData = ({ links, onLinksChange }) => {
     setIsModalOpen(true);
   };
 
+  const handleLinkView = async (linkId) => {
+    try {
+      const response = await api.post(`/add-links/${linkId}/view`);
+      const updatedLink = response.data;
+
+      setData((currentLinks) => {
+        const nextData = currentLinks.map((link) =>
+          link.id === updatedLink.id ? updatedLink : link,
+        );
+        onLinksChange?.(nextData);
+        return nextData;
+      });
+    } catch (error) {
+      // Do not prevent the external link from opening when tracking is unavailable.
+      console.error("Error recording link view:", error);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this link?")) return;
 
@@ -153,7 +171,37 @@ const ListData = ({ links, onLinksChange }) => {
   };
 
   if (loading) {
-    return <Loading label="Loading links..." />;
+    return (
+      <>
+        <div className="poppins w-full bg-gray-100 m-auto mt-5 px-5 py-5">
+          <div>
+            <div className="bg-gray-400 rounded-md w-[95%] h-10 mb-5 m-auto animate-pulse" />
+          </div>
+
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white shadow-md mb-3 px-7 py-4 w-[95%] m-auto border-l-4 rounded-sm border-l-blue-900 animate-pulse"
+            >
+              <div className="flex justify-between items-start gap-3">
+                <div className="flex-1">
+                  <div className="flex justify-end -mb-8">
+                    <div className="h-5 w-5 rounded-md bg-gray-400" />
+                  </div>
+                  <div className="h-6 w-2/3 rounded-sm bg-gray-400 mb-2" />
+                </div>
+                <div className="h-7 w-7 rounded-full bg-gray-400" />
+              </div>
+
+              <div className="flex justify-between items-center mt-2">
+                <div className="h-4 w-1/2 rounded-sm bg-gray-400" />
+                <div className="h-4 w-24 rounded-sm bg-gray-400" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    );
   }
 
   if (error) {
@@ -163,7 +211,7 @@ const ListData = ({ links, onLinksChange }) => {
   return (
     <div className="poppins w-full bg-gray-100 m-auto mt-5 px-5  py-5">
       <div>
-        
+        <h1 className="text-xl border-b-3 border-blue-900 mx-6 pb-4 font-semibold mb-5 text-blue-900">Customize your links</h1>
         <button
           onClick={openCreateModal}
           className="bg-blue-950 text-white px-4 py-2 rounded-md w-[95%]  mb-5 hover:bg-blue-800 transition-colors duration-300 m-auto flex items-center justify-center gap-2 cursor-pointer"
@@ -175,8 +223,36 @@ const ListData = ({ links, onLinksChange }) => {
         </button>
       </div>
       {data.length === 0 ? (
-        <div>No links available.</div>
+        <div>
+          <div className="poppins w-full bg-gray-100 m-auto mt-5 px-5 py-5">
+            {/* loading maintain */}
+
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-white shadow-md mb-3 px-7 py-4 w-[95%] m-auto border-l-4 rounded-sm border-l-blue-900 animate-pulse"
+              >
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex-1">
+                    <div className="flex justify-end -mb-8">
+                      <div className="h-5 w-5 rounded-md bg-gray-400" />
+                    </div>
+                    <div className="h-6 w-2/3 rounded-sm bg-gray-400 mb-2" />
+                  </div>
+                  <div className="h-7 w-7 rounded-full bg-gray-400" />
+                </div>
+
+                <div className="flex justify-between items-center mt-2">
+                  <div className="h-4 w-1/2 rounded-sm bg-gray-400" />
+                  <div className="h-4 w-24 rounded-sm bg-gray-400" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
+
+        // get data inside
         data.map((item) => (
           <div
             key={item.id}
@@ -195,14 +271,19 @@ const ListData = ({ links, onLinksChange }) => {
           >
             <div className="flex justify-between items-start gap-3">
               <div className="flex-1">
+                <section className="flex gap-3 justify-end">
+                
                 <div className="flex justify-end text-gray-500 cursor-grab -mb-8">
                   <span
-                    className="text-gray-500 hover:bg-gray-200 p-1 rounded-md"
+                    className="text-gray-500 cursor-auto p-1 rounded-md"
                     title="Drag to reorder"
                   >
-                    <i className="fa-solid fa-arrows-up-down-left-right"></i>
+                    <span>{item.view_count ?? 0}</span> <i className="fa-solid fa-eye"></i>
                   </span>
                 </div>
+                </section>
+
+                
                 <h2 className="text-xl font-semibold mb-2 text-blue-950">
                   {item.title}
                 </h2>
@@ -248,6 +329,7 @@ const ListData = ({ links, onLinksChange }) => {
               <a
                 className="text-gray-700 text-[14px] hover:underline"
                 href={item.URL}
+                onClick={() => handleLinkView(item.id)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

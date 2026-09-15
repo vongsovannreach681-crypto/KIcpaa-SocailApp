@@ -16,32 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `design_settings`
+-- Table structure for table `my_settings`
 --
 
-DROP TABLE IF EXISTS `design_settings`;
+DROP TABLE IF EXISTS `my_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `design_settings` (
+CREATE TABLE `my_settings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `theme` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'midnight',
-  `background` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'deep-space',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `short_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `text_color` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#ffffff',
-  `box_color` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#64748b',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `design_settings`
+-- Dumping data for table `my_settings`
 --
 
-LOCK TABLES `design_settings` WRITE;
-/*!40000 ALTER TABLE `design_settings` DISABLE KEYS */;
-INSERT INTO `design_settings` VALUES (1,'15','deep-space','2026-09-10 19:13:45','2026-09-14 00:45:54','#ffffff','#2a3b90');
-/*!40000 ALTER TABLE `design_settings` ENABLE KEYS */;
+LOCK TABLES `my_settings` WRITE;
+/*!40000 ALTER TABLE `my_settings` DISABLE KEYS */;
+INSERT INTO `my_settings` VALUES (1,'Kampuchea Institute of Certified Public Accountants and Auditors','Recognized. Trusted.','my-settings/3k1VaiIDoaHy2qbImWleaFhwFV2xyRm0do2q43pW.png','2026-09-13 21:30:02','2026-09-14 20:20:36');
+/*!40000 ALTER TABLE `my_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-14 14:51:34
+-- Dump completed on 2026-09-15 11:15:18

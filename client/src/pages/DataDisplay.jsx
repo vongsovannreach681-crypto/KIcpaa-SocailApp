@@ -62,9 +62,26 @@ const DataDisplay = () => {
         setIsDataReady(true);
       }
     };
-
+    
     fetchPreview();
   }, []);
+
+  const handleLinkView = async (linkId) => {
+    try {
+      const response = await api.post(`/add-links/${linkId}/view`);
+      const updatedLink = response.data;
+
+      setData((links) =>
+        links.map((link) =>
+          link.id === updatedLink.id ? updatedLink : link,
+        ),
+      );
+    } catch (error) {
+      // The visitor should still be able to open the destination if tracking fails.
+      console.error("Error recording link view:", error);
+    }
+  };
+
   if (!showPreview) {
     return (
       <LoadingCanvas
@@ -94,16 +111,8 @@ const DataDisplay = () => {
           <i className="fa-solid fa-share-nodes"></i>{" "}
         </span>
       </button>
-      {/* <section className="mt-5" aria-labelledby="profile-name">
-        <div className="flex justify-center">
-          <img src={logoKicpaa} alt="Logo" className="w-20" />
-        </div>
-        <h3 className="text-center text-xl font-bold mt-4 DmSans">
-          Kampuchea Institute of Certified Public Accountants and Auditors
-        </h3>
-        <p className="text-center DmSans text-md mt-1">Recognized. Trusted.</p>
-      </section> */}
-      <section className="mt-5" aria-labelledby="profile-name">
+     
+      <section className="-mt-12" aria-labelledby="profile-name">
         {/* main content */}
         {setting && (
           <div>
@@ -113,7 +122,7 @@ const DataDisplay = () => {
               className="h-25 m-auto mt-20"
             />
             <h3
-              className="preview-profile-title text-xl text-center DmSans mt-5 font-semibold"
+              className="preview-profile-title  text-center DmSans mt-5 font-semibold"
               style={{ color: textColor }}
             >
               {setting.title}
@@ -160,6 +169,7 @@ const DataDisplay = () => {
                   />
                   <a
                     href={link.URL}
+                    onClick={() => handleLinkView(link.id)}
                     className="w-full px-14 text-center"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -176,8 +186,12 @@ const DataDisplay = () => {
             ))}
           </div>
         )}
+
       </section>
+      {/* spacing */}
+      <div className='mb-30'></div>
       <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
+        <h2 className='m-auto text-center text-gray-300 font-semiblod text-sm'>Developed by KICPAA IT team</h2>
     </main>
   );
 };

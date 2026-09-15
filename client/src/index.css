@@ -1093,7 +1093,7 @@ body {
 
 .preview-profile-title {
   padding-inline: 0.35rem;
-  font-size: clamp(1rem, 4.8vw, 1.35rem);
+  font-size: clamp(1.4rem, 4.8vw, 1.35rem);
   line-height: 1.25;
 }
 

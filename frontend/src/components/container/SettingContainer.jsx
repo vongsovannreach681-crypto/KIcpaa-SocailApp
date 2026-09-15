@@ -20,6 +20,7 @@ const SettingContainer = () => {
   const [themeName, setThemeName] = useState("");
   const [textColor, setTextColor] = useState("#ffffff");
   const [boxColor, setBoxColor] = useState("#64748b");
+
   useEffect(() => {
     const loadEditorData = async () => {
       try {
@@ -49,6 +50,7 @@ const SettingContainer = () => {
     loadEditorData();
   }, []);
   //   if(Loading) return <h1>Loading</h1>
+
   return (
     <>
       <main className="editor-layout">
@@ -57,8 +59,15 @@ const SettingContainer = () => {
             links={links}
             themeImage={themeImage}
             themeName={themeName}
-            textColor={textColor}
-            boxColor={boxColor}
+          textColor={textColor}
+          boxColor={boxColor}
+          onLinkViewed={(updatedLink) =>
+            setLinks((currentLinks) =>
+              currentLinks.map((link) =>
+                link.id === updatedLink.id ? updatedLink : link,
+              ),
+            )
+          }
           />
         </div>
         <div className="editor-links-column">

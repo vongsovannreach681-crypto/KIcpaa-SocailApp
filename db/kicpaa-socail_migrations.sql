@@ -27,7 +27,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2026_09_08_060435_create_personal_access_tokens_table',2),(5,'2026_09_08_060646_create_add_link_table',3),(6,'2026_09_08_061823_create_add_links_table',4),(7,'2026_09_10_000000_make_add_links_image_nullable',5),(8,'2026_09_10_000001_add_position_to_add_links_table',5),(9,'2026_09_11_000000_create_design_settings_table',6),(10,'2026_09_11_000001_create_design_options_table',7),(11,'2026_09_11_022649_create_add_theme_table',8),(12,'2026_09_11_022909_create_add_themes_table',9),(13,'2026_09_11_000002_add_colors_to_design_settings_table',10),(14,'2026_09_11_030000_seed_modern_themes',11),(15,'2026_09_14_000000_seed_kbach_khmer_theme',12),(16,'2026_09_14_035310_create_my_settings_table',13),(17,'2026_09_14_120000_make_my_settings_optional_fields_nullable',14);
+INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2026_09_08_060435_create_personal_access_tokens_table',2),(5,'2026_09_08_060646_create_add_link_table',3),(6,'2026_09_08_061823_create_add_links_table',4),(7,'2026_09_10_000000_make_add_links_image_nullable',5),(8,'2026_09_10_000001_add_position_to_add_links_table',5),(9,'2026_09_11_000000_create_design_settings_table',6),(10,'2026_09_11_000001_create_design_options_table',7),(11,'2026_09_11_022649_create_add_theme_table',8),(12,'2026_09_11_022909_create_add_themes_table',9),(13,'2026_09_11_000002_add_colors_to_design_settings_table',10),(14,'2026_09_11_030000_seed_modern_themes',11),(15,'2026_09_14_000000_seed_kbach_khmer_theme',12),(16,'2026_09_14_035310_create_my_settings_table',13),(17,'2026_09_14_120000_make_my_settings_optional_fields_nullable',14),(18,'2026_09_15_000000_add_view_count_to_add_links_table',15);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-14 14:51:34
+-- Dump completed on 2026-09-15 11:15:17
