@@ -3,6 +3,7 @@ import Display from "../contents/Display";
 import ListData from "../contents/ListData";
 import api from "../../api/api";
 import Setting from "../contents/Setting";
+import Loading from "../loadings/Loading";
 const backendOrigin = api.defaults.baseURL.replace(/\/api\/?$/, "");
 
 const resolveThemeImage = (theme) => {
@@ -13,13 +14,12 @@ const resolveThemeImage = (theme) => {
     : `${backendOrigin}${theme.themeImageUrl}`;
 };
 
-const Container = () => {
+const SettingContainer = () => {
   const [links, setLinks] = useState([]);
   const [themeImage, setThemeImage] = useState(undefined);
   const [themeName, setThemeName] = useState("");
   const [textColor, setTextColor] = useState("#ffffff");
   const [boxColor, setBoxColor] = useState("#64748b");
-
   useEffect(() => {
     const loadEditorData = async () => {
       try {
@@ -48,25 +48,27 @@ const Container = () => {
 
     loadEditorData();
   }, []);
-
+  //   if(Loading) return <h1>Loading</h1>
   return (
-    <main className="editor-layout">
-      <div className="editor-preview-column">
-        <Display
-          links={links}
-          themeImage={themeImage}
-          themeName={themeName}
-          textColor={textColor}
-          boxColor={boxColor}
-        />
-      </div>
-      <div className="editor-links-column">
-        {/* list data */}
-        
-        <ListData links={links} onLinksChange={setLinks} />
-      </div>
-    </main>
+    <>
+      <main className="editor-layout">
+        <div className="editor-preview-column">
+          <Display
+            links={links}
+            themeImage={themeImage}
+            themeName={themeName}
+            textColor={textColor}
+            boxColor={boxColor}
+          />
+        </div>
+        <div className="editor-links-column">
+          {/* list data */}
+
+          <Setting/>
+        </div>
+      </main>
+    </>
   );
 };
 
-export default Container;
+export default SettingContainer;

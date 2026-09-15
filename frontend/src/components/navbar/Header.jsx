@@ -22,9 +22,13 @@ const Header = () => {
             <NavLink to="/" end className={navLinkClass}>
               Template
             </NavLink>
-            
+
             <NavLink to="/themelist" className={navLinkClass}>
               Theme
+            </NavLink>
+
+            <NavLink to="/setting" className={navLinkClass}>
+              Setting
             </NavLink>
 
             <NavLink to="/previewpage" className={navLinkClass}>
@@ -32,22 +36,26 @@ const Header = () => {
             </NavLink>
           </nav>
         </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <img
-              className="h-18 w-18 rounded-full"
-              src={avartat}
-              alt="Avatar"
-            />
-            <div>
-              <span className="poppins text-blue-950 font-bold">
-                KICPAA ADMIN
-              </span>
-              <br />
-              <span className="poppins font-medium text-blue-950">IT TEAM</span>
+        <NavLink to="/setting" className={navLinkClass}>
+          <div className="hover:border-1 hover:border-blue-950 cursor-pointer pr-3 hover:bg-gray-200 rounded-xl">
+            <div className="flex items-center gap-2">
+              <img
+                className="h-18 w-18 rounded-full"
+                src={avartat}
+                alt="Avatar"
+              />
+              <div>
+                <span className="poppins text-blue-950 font-bold ">
+                  KICPAA TEAM
+                </span>
+                <br />
+                <span className="poppins font-medium text-blue-950">
+                  IT TEAM
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </NavLink>
       </header>
     </>
   );

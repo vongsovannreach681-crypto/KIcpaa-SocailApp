@@ -25,29 +25,39 @@ const Preview = ({
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [setting, setSetting] = useState(null);
 
   useEffect(() => {
-    if (links !== undefined) {
-      setLoading(false);
-      return undefined;
-    }
-
-    const getAllData = async () => {
+    const getPreviewData = async () => {
       try {
-        const response = await api.get("/add-links");
-        const payload = Array.isArray(response.data)
-          ? response.data
-          : (response.data?.data ?? []);
-        setData(payload);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        const [settingsRes, linksRes] = await Promise.all([
+          api.get("/my-settings"),
+          links === undefined ? api.get("/add-links") : Promise.resolve(null),
+        ]);
+
+        const settings = Array.isArray(settingsRes.data)
+          ? settingsRes.data
+          : (settingsRes.data?.data ?? []);
+
+        setSetting(settings[0] ?? null);
+
+        if (linksRes) {
+          const linkData = Array.isArray(linksRes.data)
+            ? linksRes.data
+            : (linksRes.data?.data ?? []);
+          setData(linkData);
+        }
+      } catch (err) {
+        console.error("Error fetching preview data:", err);
+        setError("Unable to load preview data.");
       } finally {
         setLoading(false);
       }
     };
-    getAllData();
 
-    const refreshInterval = setInterval(getAllData, 3000);
+    getPreviewData();
+
+    const refreshInterval = setInterval(getPreviewData, 3000);
 
     return () => clearInterval(refreshInterval);
   }, [links]);
@@ -108,22 +118,30 @@ const Preview = ({
 
             <section>
               {/* main content */}
-              <div>
-                <img src={logo} alt="Logo" className="h-25 m-auto mt-20" />
-                <h3
-                  className="preview-profile-title text-xl text-center DmSans mt-5 font-semibold"
-                  style={{ color: textColor }}
-                >
-                  Kampuchea Institute of Certified Public Accountants and
-                  Auditors
-                </h3>
-                <p
-                  className="preview-profile-subtitle text-lg text-center DmSans mt-2"
-                  style={{ color: textColor }}
-                >
-                  Recognized. Trusted.
-                </p>
-              </div>
+              {setting && (
+                <div>
+                  <img
+                    src={setting.image_url || logo}
+                    alt="Logo"
+                    className="h-25 m-auto mt-20"
+                  />
+                  <h3
+                    className="preview-profile-title text-xl text-center DmSans mt-5 font-semibold"
+                    style={{ color: textColor }}
+                  >
+                    {setting.title}
+                  </h3>
+                  <p
+                    className="preview-profile-subtitle text-lg text-center DmSans mt-2"
+                    style={{ color: textColor }}
+                  >
+                    {setting.short_title}
+                  </p>
+                </div>
+              )}
+              {!setting && error && (
+                <p className="mt-20 text-center text-sm text-red-200">{error}</p>
+              )}
             </section>
 
             {/* list Links */}

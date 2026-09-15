@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api/api";
 import logoKicpaa from "../assets/KicpaaShot.png";
 import logoKicpaaNobg from "../assets/KicpaaNobg.png";
@@ -19,20 +19,29 @@ const DataDisplay = () => {
   const [themeImage, setThemeImage] = useState("");
   const [textColor, setTextColor] = useState(defaultTextColor);
   const [boxColor, setBoxColor] = useState(defaultBoxColor);
-
+  const [setting, setSetting] = useState(null);
   useEffect(() => {
     const fetchPreview = async () => {
       try {
-        const [linksResponse, settingsResponse, themesResponse] =
-          await Promise.all([
-            api.get("/add-links"),
-            api.get("/design-settings"),
-            api.get("/addThemes"),
-          ]);
+        const [
+          linksResponse,
+          settingsResponse,
+          themesResponse,
+          mySettingsResponse,
+        ] = await Promise.all([
+          api.get("/add-links"),
+          api.get("/design-settings"),
+          api.get("/addThemes"),
+          api.get("/my-settings"),
+        ]);
         const links = Array.isArray(linksResponse.data)
           ? linksResponse.data
           : (linksResponse.data?.data ?? []);
         const settings = settingsResponse.data ?? {};
+        const mySettings = Array.isArray(mySettingsResponse.data)
+          ? mySettingsResponse.data
+          : (mySettingsResponse.data?.data ?? []);
+        setSetting(mySettings[0] ?? null);
         const themes = Array.isArray(themesResponse.data)
           ? themesResponse.data
           : (themesResponse.data?.data ?? []);
@@ -76,10 +85,16 @@ const DataDisplay = () => {
           : undefined,
       }}
     >
-      <button type="button" className="share-trigger" onClick={() => setIsShareOpen(true)}>
-        <span aria-hidden="true"><i class="fa-solid fa-share-nodes"></i> </span> 
+      <button
+        type="button"
+        className="share-trigger"
+        onClick={() => setIsShareOpen(true)}
+      >
+        <span aria-hidden="true">
+          <i className="fa-solid fa-share-nodes"></i>{" "}
+        </span>
       </button>
-      <section className="mt-5" aria-labelledby="profile-name">
+      {/* <section className="mt-5" aria-labelledby="profile-name">
         <div className="flex justify-center">
           <img src={logoKicpaa} alt="Logo" className="w-20" />
         </div>
@@ -87,6 +102,33 @@ const DataDisplay = () => {
           Kampuchea Institute of Certified Public Accountants and Auditors
         </h3>
         <p className="text-center DmSans text-md mt-1">Recognized. Trusted.</p>
+      </section> */}
+      <section className="mt-5" aria-labelledby="profile-name">
+        {/* main content */}
+        {setting && (
+          <div>
+            <img
+              src={setting.image_url || logoKicpaa}
+              alt="Logo"
+              className="h-25 m-auto mt-20"
+            />
+            <h3
+              className="preview-profile-title text-xl text-center DmSans mt-5 font-semibold"
+              style={{ color: textColor }}
+            >
+              {setting.title}
+            </h3>
+            <p
+              className="preview-profile-subtitle text-lg text-center DmSans mt-2"
+              style={{ color: textColor }}
+            >
+              {setting.short_title}
+            </p>
+          </div>
+        )}
+        {!setting && error && (
+          <p className="mt-20 text-center text-sm text-red-200">{error}</p>
+        )}
       </section>
       <section className="mt-10 pb-8" aria-labelledby="links-section">
         {data.length === 0 ? (

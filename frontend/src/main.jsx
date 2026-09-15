@@ -6,6 +6,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PreviewsPage from "./pages/PreviewsPage.jsx";
 import ThemeList from "./pages/ThemeList.jsx";
+import SettingContainer from "./components/container/SettingContainer.jsx";
+import SettingProfile from "./pages/SettingProfile.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,7 +21,12 @@ const router = createBrowserRouter([
   {
     path: "/themelist",
     element: <ThemeList/>
+  },
+  {
+    path:"/setting",
+    element:<SettingProfile/>
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
