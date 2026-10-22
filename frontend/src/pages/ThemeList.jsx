@@ -75,6 +75,25 @@ const ThemeList = () => {
     }
   };
 
+  const handleThemeDeleted = async (theme) => {
+    if (String(selectedTheme?.id) !== String(theme.id)) {
+      setSaveMessageType("success");
+      setSaveMessage("Theme deleted successfully.");
+      return;
+    }
+
+    setSelectedTheme(defaultTheme);
+    try {
+      await api.patch("/design-settings", { theme: String(defaultTheme.id) });
+      setSaveMessageType("success");
+      setSaveMessage("Theme deleted. Default theme selected.");
+    } catch (error) {
+      console.error("Error selecting default theme after deletion:", error);
+      setSaveMessageType("error");
+      setSaveMessage("Theme deleted, but the default theme could not be saved.");
+    }
+  };
+
   const saveColor = (field, value, setter) => {
     setter(value);
 
@@ -114,6 +133,7 @@ const ThemeList = () => {
             defaultTheme={defaultTheme}
             selectedThemeId={selectedTheme?.id}
             onThemeSelect={handleThemeSelect}
+            onThemeDeleted={handleThemeDeleted}
             onAddTheme={() => setIsThemeModalOpen(true)}
           />
           <section

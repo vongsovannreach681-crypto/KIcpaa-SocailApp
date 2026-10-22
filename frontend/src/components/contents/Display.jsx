@@ -14,6 +14,8 @@ const Display = ({ links, themeImage, themeName, textColor, boxColor, onLinkView
         boxColor={boxColor}
         onLinkViewed={onLinkViewed}
       />
+
+      {/* <embed src="http://localhost:5174/" className="w-full "  type="" /> */}
     </div>
   );
 };

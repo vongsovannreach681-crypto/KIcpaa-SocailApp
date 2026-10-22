@@ -1,26 +1,13 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const LoadingCanvas = ({ logo, isDataReady, onComplete }) => {
   const canvasRef = useRef(null);
-  const [progress, setProgress] = useState(1);
-
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setProgress((current) => {
-        if (current >= 100) return current;
-        return current + 1;
-      });
-    }, 10);
+    if (!isDataReady) return undefined;
 
-    return () => window.clearInterval(timer);
-  }, [isDataReady]);
-
-  useEffect(() => {
-    if (progress !== 100 || !isDataReady) return undefined;
-
-    const completionTimer = window.setTimeout(onComplete, 260);
+    const completionTimer = window.setTimeout(onComplete, 80);
     return () => window.clearTimeout(completionTimer);
-  }, [isDataReady, onComplete, progress]);
+  }, [isDataReady, onComplete]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -106,7 +93,7 @@ const LoadingCanvas = ({ logo, isDataReady, onComplete }) => {
     <main className="canvas-loader" aria-busy="true" aria-live="polite">
       <canvas ref={canvasRef} className="canvas-loader-art" aria-hidden="true" />
       <p>Preparing your links</p>
-      <span>Loading preview · {progress}%</span>
+      <span>Loading preview…</span>
     </main>
   );
 };

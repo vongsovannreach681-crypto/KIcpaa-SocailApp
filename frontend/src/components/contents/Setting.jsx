@@ -79,16 +79,17 @@ const Setting = () => {
 
     try {
       const payload = new FormData();
+      // Laravel's method override is read from the request body, not the URL.
+      payload.append("_method", "PUT");
       payload.append("title", form.title);
       payload.append("short_title", form.short_title);
       if (imageFile) payload.append("image", imageFile);
 
-      // PHP does not reliably populate multipart PUT request data.  Use a
-      // method-spoofed POST so Laravel receives the text fields and image.
-      const response = await api.post(
-        `/my-settings/${setting.id}?_method=PUT`,
-        payload,
-      );
+      // PHP does not reliably populate multipart PUT request data, so send a
+      // POST with Laravel's method override in the multipart body.
+      const response = await api.post(`/my-settings/${setting.id}`, payload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const updated = response.data?.data ?? response.data ?? {};
       setSetting((prev) => ({ ...prev, ...updated }));

@@ -21,9 +21,12 @@ const ListTheme = ({
   selectedThemeId,
   onThemeSelect,
   onAddTheme,
+  onThemeDeleted,
 }) => {
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deletingThemeId, setDeletingThemeId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     const fetchThemes = async () => {
@@ -46,6 +49,28 @@ const ListTheme = ({
 
   const allThemes = [...(defaultTheme ? [defaultTheme] : []), ...themes];
 
+  const handleDeleteTheme = async (theme) => {
+    if (!window.confirm(`Delete the "${theme.themeName}" theme? This cannot be undone.`)) {
+      return;
+    }
+
+    setDeletingThemeId(String(theme.id));
+    setDeleteError("");
+
+    try {
+      await api.delete(`/addThemes/${theme.id}`);
+      setThemes((currentThemes) =>
+        currentThemes.filter((currentTheme) => String(currentTheme.id) !== String(theme.id)),
+      );
+      await onThemeDeleted?.(theme);
+    } catch (error) {
+      console.error("Error deleting theme:", error);
+      setDeleteError("Theme could not be deleted. Please try again.");
+    } finally {
+      setDeletingThemeId(null);
+    }
+  };
+
   return (
     <section className="theme-picker" aria-labelledby="theme-picker-title">
       <button type="button" onClick={onAddTheme}>
@@ -59,6 +84,11 @@ const ListTheme = ({
           {allThemes.length} themes
         </span>
       </div>
+      {deleteError && (
+        <p className="theme-picker-empty text-red-600" role="alert">
+          {deleteError}
+        </p>
+      )}
       {allThemes.length === 0 ? (
         <p className="theme-picker-empty">No themes available yet.</p>
       ) : (
@@ -66,36 +96,51 @@ const ListTheme = ({
           {allThemes.map((theme) => {
             const selected = selectedThemeId === theme.id;
             const imageUrl = themeImageUrl(theme);
+            const deletable = String(theme.id) !== String(defaultTheme?.id);
+            const deleting = deletingThemeId === String(theme.id);
 
             return (
-              <button
-                key={theme.id}
-                type="button"
-                className={`theme-picker-option ${selected ? "is-selected" : ""}`}
-                onClick={() => onThemeSelect?.(theme)}
-                aria-pressed={selected}
-              >
-                <span className="theme-picker-image-wrap">
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt={theme.themeName}
-                      className="theme-picker-image"
-                    />
-                  ) : (
-                    <span className="theme-picker-default-preview">
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                    </span>
-                  )}
-                  {selected && (
-                    <span className="theme-picker-check">&#10003;</span>
-                  )}
-                </span>
-                <span className="theme-picker-name">{theme.themeName}</span>
-              </button>
+              <div key={theme.id} className="relative min-w-0">
+                <button
+                  type="button"
+                  className={`theme-picker-option ${selected ? "is-selected" : ""}`}
+                  onClick={() => onThemeSelect?.(theme)}
+                  aria-pressed={selected}
+                >
+                  <span className="theme-picker-image-wrap">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={theme.themeName}
+                        className="theme-picker-image"
+                      />
+                    ) : (
+                      <span className="theme-picker-default-preview">
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                      </span>
+                    )}
+                    {selected && (
+                      <span className="theme-picker-check">&#10003;</span>
+                    )}
+                  </span>
+                  <span className="theme-picker-name">{theme.themeName}</span>
+                </button>
+                {deletable && (
+                  <button
+                    type="button"
+                    className="absolute left-2 top-2 z-10 rounded-full bg-red-600 px-2 py-1 text-xs font-semibold text-white shadow hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={() => handleDeleteTheme(theme)}
+                    disabled={deleting}
+                    aria-label={`Delete ${theme.themeName} theme`}
+                    title={`Delete ${theme.themeName} theme`}
+                  >
+                    {deleting ? "Deleting..." : "Delete"}
+                  </button>
+                )}
+              </div>
             );
           })}
         </div>
