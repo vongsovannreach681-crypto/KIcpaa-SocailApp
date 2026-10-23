@@ -91,9 +91,20 @@ const LoadingCanvas = ({ logo, isDataReady, onComplete }) => {
 
   return (
     <main className="canvas-loader" aria-busy="true" aria-live="polite">
-      <canvas ref={canvasRef} className="canvas-loader-art" aria-hidden="true" />
-      <p>Preparing your links</p>
-      <span>Loading preview…</span>
+      <div className="canvas-loader-stage">
+        <span className="canvas-loader-orbit canvas-loader-orbit-one" aria-hidden="true" />
+        <span className="canvas-loader-orbit canvas-loader-orbit-two" aria-hidden="true" />
+        <canvas ref={canvasRef} className="canvas-loader-art" aria-hidden="true" />
+      </div>
+      <div className="canvas-loader-copy">
+        <p>Preparing your links</p>
+        <span>Loading your experience</span>
+        <span className="canvas-loader-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+      </div>
     </main>
   );
 };
