@@ -3,7 +3,7 @@ services:
     name: kicpaa-api
     runtime: docker
     dockerfilePath: Dockerfile
-    plan: 0.5c-512mb
+    plan: free
     region: oregon
     healthCheckPath: /up
     autoDeploy: true
