@@ -45,6 +45,18 @@ Boost provides your agent 15+ tools and skills that help agents build Laravel ap
 
 Build the production image from this directory with `docker build -t kicpaa-api .`. The Dockerfile installs Composer dependencies after copying `composer.json` and `composer.lock`, builds the Vite assets, and serves the app on port 8080.
 
+### Persistent uploaded images on Render
+
+Uploaded link and theme images use Laravel's `public` filesystem disk. The default location (`storage/app/public`) is part of the container filesystem and is not durable across replacement or redeployment.
+
+Attach a Render persistent disk to the backend service, set its mount path to `/var/data`, and add this backend environment variable:
+
+```text
+PUBLIC_DISK_ROOT=/var/data/storage
+```
+
+The entrypoint creates that directory and Laravel serves `/storage/...` from it. Keep the mount path and `PUBLIC_DISK_ROOT` consistent. This setting affects newly stored files; it cannot recover images that were already removed from the previous ephemeral filesystem.
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
