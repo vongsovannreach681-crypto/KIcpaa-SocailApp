@@ -1,2 +1,8 @@
 *
 !.gitignore
+!images/
+!images/**
+!my-settings/
+!my-settings/**
+!themes/
+!themes/**

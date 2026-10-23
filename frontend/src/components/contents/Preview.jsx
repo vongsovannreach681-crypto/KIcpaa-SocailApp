@@ -256,7 +256,7 @@ const Preview = ({
                               decoding="async"
                               onError={(event) => {
                                 event.currentTarget.onerror = null;
-                                event.currentTarget.style.display = "none";
+                                event.currentTarget.src = logo;
                               }}
                             />
                           ) : smart ? (

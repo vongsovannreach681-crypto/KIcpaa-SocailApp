@@ -113,15 +113,23 @@ const ListTheme = ({
                         src={imageUrl}
                         alt={theme.themeName}
                         className="theme-picker-image"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.style.display = 'none';
+                          const fallback = e.currentTarget.parentElement.querySelector('.theme-picker-default-preview');
+                          if (fallback) fallback.style.display = 'grid';
+                        }}
                       />
-                    ) : (
-                      <span className="theme-picker-default-preview">
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                      </span>
-                    )}
+                    ) : null}
+                    <span
+                      className="theme-picker-default-preview"
+                      style={{ display: imageUrl ? 'none' : 'grid' }}
+                    >
+                      <span />
+                      <span />
+                      <span />
+                      <span />
+                    </span>
                     {selected && (
                       <span className="theme-picker-check">&#10003;</span>
                     )}
