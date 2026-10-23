@@ -7,6 +7,7 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
   const [themeImage, setThemeImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
       setThemeImage(null);
       setImagePreview("");
       setErrors({});
+      setFormError("");
     }
   }, [isOpen]);
 
@@ -24,6 +26,16 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setErrors({});
+    setFormError("");
+    if (file.size > 10 * 1024 * 1024) {
+      setThemeImage(null);
+      setImagePreview("");
+      setErrors({ themeImage: ["The theme image must not exceed 10 MB."] });
+      event.target.value = "";
+      return;
+    }
+
     setThemeImage(file);
     setImagePreview(URL.createObjectURL(file));
   };
@@ -32,6 +44,7 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
     event.preventDefault();
     setSubmitting(true);
     setErrors({});
+    setFormError("");
 
     const payload = new FormData();
     payload.append("themeName", themeName);
@@ -48,6 +61,11 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
         setErrors(error.response.data.errors || {});
       } else {
         console.error("Error saving theme:", error);
+        setFormError(
+          error.response?.status === 413
+            ? "The image is too large. Choose a GIF or image under 10 MB."
+            : "The theme could not be uploaded. Check your connection and try again.",
+        );
       }
     } finally {
       setSubmitting(false);
@@ -88,7 +106,7 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
 
           <div>
             <label className="mb-2 block text-lg font-medium text-gray-700">
-              Theme image or GIF
+              Theme image or GIF (maximum 10 MB)
             </label>
             <button
               type="button"
@@ -118,6 +136,11 @@ const AddThemeModal = ({ isOpen, onClose, onThemeAdded }) => {
               </p>
             )}
           </div>
+          {formError && (
+            <p className="text-sm text-red-600" role="alert">
+              {formError}
+            </p>
+          )}
 
           <button
             type="submit"
