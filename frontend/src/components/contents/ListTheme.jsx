@@ -13,7 +13,7 @@ const themeImageUrl = (theme) => {
       : `${backendOrigin}${theme.themeImageUrl}`;
   }
 
-  return `${backendOrigin}/storage/${theme.themeImage}`;
+  return `${backendOrigin}/storage/${theme.themes}`;
 };
 
 const ListTheme = ({

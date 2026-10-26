@@ -230,7 +230,7 @@ const DataDisplay = () => {
               .split(/\s+/)
               .map((word, index) => <span key={`${word}-${index}`} style={{ "--word-index": index }}>{word}&nbsp;</span>)}
           </h1>
-          <p className="hub-tagline">{setting?.short_title || "Recognized. Trusted."}</p>
+          <p className="hub-tagline">{setting?.short_title}</p>
           {error && <p className="hub-error" role="status">{error}</p>}
           {themeName && <p className="hub-theme-label">{""}</p>}
         </section>
