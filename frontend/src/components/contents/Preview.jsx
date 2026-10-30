@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/KicpaaShot-03.png";
 import api from "../../api/api";
+import { resolveAssetUrl } from "../../api/assetUrl";
 import Loading from "../loadings/Loading";
 
 const stars = Array.from({ length: 48 }, (_, index) => ({
@@ -95,6 +96,8 @@ const Preview = ({
           "--preview-theme-image": themeImage ? `url(${themeImage})` : "none",
           "--preview-text-color": textColor,
           "--preview-box-color": boxColor,
+          "--box-color": boxColor,
+          "--text-color": textColor,
         }}
       >
         <div className="preview-device-frame">
@@ -138,7 +141,7 @@ const Preview = ({
               {setting && (
                 <div>
                   <img
-                    src={setting.image_url || logo}
+                    src={resolveAssetUrl(setting.image_url) || logo}
                     alt="Logo"
                     className="h-25 m-auto mt-20"
                   />
@@ -157,7 +160,9 @@ const Preview = ({
                 </div>
               )}
               {!setting && error && (
-                <p className="mt-20 text-center text-sm text-red-200">{error}</p>
+                <p className="mt-20 text-center text-sm text-red-200">
+                  {error}
+                </p>
               )}
             </section>
 
@@ -168,18 +173,17 @@ const Preview = ({
                 {previewData.map((item) => (
                   <div
                     key={item.id}
-                    className="preview-link-card bg-white/25 backdrop-blur-md p-4 rounded-full shadow-md
+                    className="preview-link-card backdrop-blur-md p-4 rounded-full shadow-md
              transition-all duration-300 ease-out
-             hover:bg-white/35 hover:shadow-xl hover:-translate-y-1
+             hover:shadow-xl hover:-translate-y-1
              hover:scale-[1.02] cursor-pointer"
-                    style={{ backgroundColor: boxColor }}
                   >
                     <div className="relative flex min-h-13 items-center justify-center text-center">
                       <img
-                        src={item.image_url || logo}
+                        src={resolveAssetUrl(item.image_url) || logo}
                         alt={item.title}
                         className={`absolute left-0 h-13 w-13 rounded-full object-cover ${
-                          !item.image_url ? "hidden" : ""
+                          !resolveAssetUrl(item.image_url) ? "hidden" : ""
                         }`}
                         onError={(event) => {
                           event.currentTarget.onerror = null;

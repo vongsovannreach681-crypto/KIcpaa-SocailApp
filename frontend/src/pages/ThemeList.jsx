@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/navbar/Header";
 import Display from "../components/contents/Display";
 import ListTheme from "../components/contents/ListTheme";
 import AddThemeModal from "../components/Forms/AddThemeModal";
 import api from "../api/api";
+
+const backendOrigin = api.defaults.baseURL.replace(/\/api\/?$/, "");
+
+const resolveThemeImage = (theme) => {
+  if (!theme?.themeImageUrl && !theme?.themeImage) return undefined;
+
+  const url = theme.themeImageUrl || theme.themeImage;
+  return url.startsWith("http")
+    ? url
+    : `${backendOrigin}${url.startsWith("/") ? "" : "/"}${url}`;
+};
 
 const ThemeList = () => {
   const defaultTheme = { id: "default-stars", themeName: "Default Stars" };
@@ -13,6 +24,19 @@ const ThemeList = () => {
   const [boxColor, setBoxColor] = useState("#64748b");
   const [saveMessage, setSaveMessage] = useState("");
   const [saveMessageType, setSaveMessageType] = useState("success");
+  const colorTimeouts = useRef({});
+
+  useEffect(() => {
+    return () => {
+      Object.values(colorTimeouts.current).forEach(clearTimeout);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!saveMessage) return;
+    const timer = setTimeout(() => setSaveMessage(""), 3000);
+    return () => clearTimeout(timer);
+  }, [saveMessage]);
 
   useEffect(() => {
     const loadSavedTheme = async () => {
@@ -51,13 +75,26 @@ const ThemeList = () => {
     }
   };
 
-  const saveColor = async (field, value, setter) => {
+  const saveColor = (field, value, setter) => {
     setter(value);
-    try {
-      await api.patch("/design-settings", { [field]: value });
-    } catch (error) {
-      console.error("Error saving preview color:", error);
+
+    if (colorTimeouts.current[field]) {
+      clearTimeout(colorTimeouts.current[field]);
     }
+
+    colorTimeouts.current[field] = setTimeout(async () => {
+      try {
+        await api.patch("/design-settings", { [field]: value });
+        setSaveMessageType("success");
+        setSaveMessage(
+          `${field === "boxColor" ? "Link box color" : "Text color"} saved.`,
+        );
+      } catch (error) {
+        console.error("Error saving preview color:", error);
+        setSaveMessageType("error");
+        setSaveMessage("Color could not be saved.");
+      }
+    }, 300);
   };
 
   return (
@@ -66,7 +103,7 @@ const ThemeList = () => {
       <main className="editor-layout">
         <div className="editor-preview-column">
           <Display
-            themeImage={selectedTheme?.themeImageUrl}
+            themeImage={resolveThemeImage(selectedTheme)}
             themeName={selectedTheme?.themeName}
             textColor={textColor}
             boxColor={boxColor}

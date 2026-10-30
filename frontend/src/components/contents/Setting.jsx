@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import api from "../../api/api";
+import { resolveAssetUrl } from "../../api/assetUrl";
 
 const Setting = () => {
   const [setting, setSetting] = useState(null);
@@ -87,7 +88,6 @@ const Setting = () => {
       const response = await api.post(
         `/my-settings/${setting.id}?_method=PUT`,
         payload,
-        { headers: { "Content-Type": "multipart/form-data" } },
       );
 
       const updated = response.data?.data ?? response.data ?? {};
@@ -137,7 +137,7 @@ const Setting = () => {
   }
 
   const displayImage =
-    imagePreview || (!imageFailed ? setting?.image_url : null);
+    imagePreview || (!imageFailed ? resolveAssetUrl(setting?.image_url) : null);
 
   return (
     <section className="my-5 w-full rounded-md bg-white px-8 py-8 shadow-sm poppins">

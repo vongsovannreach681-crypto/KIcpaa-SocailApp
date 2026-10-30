@@ -16,6 +16,6 @@ class MySetting extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? '/storage/' . $this->image : null;
+        return $this->image ? '/storage/' . ltrim($this->image, '/') : null;
     }
 }

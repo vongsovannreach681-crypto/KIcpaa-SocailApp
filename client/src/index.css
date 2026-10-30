@@ -141,7 +141,9 @@ body {
   background: transparent;
   color: #0369a1;
   cursor: pointer;
-  font: 700 0.75rem "Poppins", sans-serif;
+  font:
+    700 0.75rem "Poppins",
+    sans-serif;
 }
 .share-download-qr:hover {
   color: #075985;
@@ -924,41 +926,50 @@ body {
   background: #111;
 }
 .preview-theme-carbon .preview-link-card {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: var(
+    --box-color,
+    var(--preview-box-color, rgba(255, 255, 255, 0.08))
+  );
 }
 .preview-theme-christmas .preview-screen {
   background: #0e4935;
 }
 .preview-theme-christmas .preview-link-card {
-  background: #176b3b !important;
+  background: var(--box-color, var(--preview-box-color, #176b3b));
 }
 .preview-theme-pride .preview-screen {
   background: linear-gradient(160deg, #183da4, #ff5964 55%, #f2c229);
 }
 .preview-theme-pride .preview-link-card {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: var(
+    --box-color,
+    var(--preview-box-color, rgba(255, 255, 255, 0.9))
+  );
 }
 .preview-theme-pride .preview-link-card h2 {
-  color: #18223e;
+  color: var(--text-color, var(--preview-text-color, #18223e));
 }
 .preview-theme-glitch .preview-screen {
   background: #f7f7f7;
 }
 .preview-theme-glitch .preview-link-card {
   border: 2px solid #222;
-  background: #fff !important;
+  background: var(--box-color, var(--preview-box-color, #fff));
 }
 .preview-theme-glitch .preview-link-card h2 {
-  color: #111;
+  color: var(--text-color, var(--preview-text-color, #111));
 }
 .preview-theme-winter .preview-screen {
   background: linear-gradient(#c6d5e4, #f5f8fb);
 }
 .preview-theme-winter .preview-link-card {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: var(
+    --box-color,
+    var(--preview-box-color, rgba(255, 255, 255, 0.85))
+  );
 }
 .preview-theme-winter .preview-link-card h2 {
-  color: #26384e;
+  color: var(--text-color, var(--preview-text-color, #26384e));
 }
 .preview-theme-blush .preview-screen {
   background: linear-gradient(145deg, #f5a4b0, #fce2d4);
@@ -967,7 +978,7 @@ body {
   background: #dcebc8;
 }
 .preview-theme-forest .preview-link-card {
-  background: #087b3e !important;
+  background: var(--box-color, var(--preview-box-color, #087b3e));
 }
 .preview-theme-aurora .preview-screen {
   background: linear-gradient(145deg, #102b3c, #0a9fc2, #15243d);
@@ -976,7 +987,7 @@ body {
   background: linear-gradient(145deg, #07566d, #58c5d5);
 }
 .preview-theme-ocean .preview-link-card {
-  background: rgba(5, 67, 88, 0.62) !important;
+  background: var(--box-color, var(--preview-box-color, rgba(5, 67, 88, 0.62)));
 }
 .preview-theme-sunset .preview-screen {
   background: linear-gradient(145deg, #51245f, #f06c50 55%, #ffc76b);
@@ -985,20 +996,23 @@ body {
   background: linear-gradient(145deg, #ff9dbd, #f5d6ff);
 }
 .preview-theme-candy .preview-link-card {
-  background: rgba(255, 255, 255, 0.7) !important;
+  background: var(
+    --box-color,
+    var(--preview-box-color, rgba(255, 255, 255, 0.7))
+  );
 }
 .preview-theme-candy .preview-link-card h2 {
-  color: #5b3a62;
+  color: var(--text-color, var(--preview-text-color, #5b3a62));
 }
 .preview-theme-paper .preview-screen {
   background: #f5f0e7;
 }
 .preview-theme-paper .preview-link-card {
-  background: #fffaf1 !important;
+  background: var(--box-color, var(--preview-box-color, #fffaf1));
   border: 1px solid #d6c6ae;
 }
 .preview-theme-paper .preview-link-card h2 {
-  color: #263b4d;
+  color: var(--text-color, var(--preview-text-color, #263b4d));
 }
 .preview-theme-cobalt .preview-screen {
   background: linear-gradient(145deg, #071e69, #2b61df);
@@ -1012,13 +1026,16 @@ body {
 }
 .preview-theme-neon .preview-link-card {
   border: 1px solid #54e8e0;
-  background: rgba(10, 36, 48, 0.85) !important;
+  background: var(
+    --box-color,
+    var(--preview-box-color, rgba(10, 36, 48, 0.85))
+  );
 }
 .preview-theme-sage .preview-screen {
   background: #dfe9d7;
 }
 .preview-theme-sage .preview-link-card {
-  background: #587b68 !important;
+  background: var(--box-color, var(--preview-box-color, #587b68));
 }
 .preview-theme-citrus .preview-screen {
   background: linear-gradient(145deg, #f4c542, #f47e37);
@@ -1027,22 +1044,25 @@ body {
   background: linear-gradient(145deg, #f46e61, #ffe0c2);
 }
 .preview-theme-coral .preview-link-card {
-  background: rgba(255, 255, 255, 0.68) !important;
+  background: var(
+    --box-color,
+    var(--preview-box-color, rgba(255, 255, 255, 0.68))
+  );
 }
 .preview-theme-coral .preview-link-card h2 {
-  color: #713d38;
+  color: var(--text-color, var(--preview-text-color, #713d38));
 }
 .preview-theme-lavender .preview-screen {
   background: linear-gradient(145deg, #d8d2f3, #f7e4ef);
 }
 .preview-theme-lavender .preview-link-card {
-  background: #665a9d !important;
+  background: var(--box-color, var(--preview-box-color, #665a9d));
 }
 .preview-theme-mono .preview-screen {
   background: #e9e9e9;
 }
 .preview-theme-mono .preview-link-card {
-  background: #222 !important;
+  background: var(--box-color, var(--preview-box-color, #222));
 }
 
 /* Layered background details keep themes expressive beyond the star field. */
@@ -1359,11 +1379,20 @@ body {
 .preview-profile-title,
 .preview-profile-subtitle,
 .preview-link-caption {
-  color: var(--preview-text-color, #ffffff);
+  color: var(--text-color, var(--preview-text-color, #ffffff));
 }
 
 .preview-link-card {
-  background: var(--preview-box-color, #64748b) !important;
+  background-color: var(--box-color, var(--preview-box-color, #64748b));
+  transition:
+    transform 0.3s ease-out,
+    box-shadow 0.3s ease-out,
+    filter 0.25s ease-out,
+    background-color 0.25s ease-out;
+}
+
+.preview-link-card:hover {
+  filter: brightness(1.15);
 }
 
 .preview-color-controls {

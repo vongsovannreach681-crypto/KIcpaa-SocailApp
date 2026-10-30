@@ -17,6 +17,7 @@ const DataDisplay = () => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [error, setError] = useState("");
   const [themeImage, setThemeImage] = useState("");
+  const [themeName, setThemeName] = useState("");
   const [textColor, setTextColor] = useState(defaultTextColor);
   const [boxColor, setBoxColor] = useState(defaultBoxColor);
   const [setting, setSetting] = useState(null);
@@ -51,6 +52,7 @@ const DataDisplay = () => {
 
         setData(links);
         setThemeImage(toBackendUrl(selectedTheme?.themeImageUrl));
+        setThemeName(selectedTheme?.themeName || "");
         setTextColor(settings.textColor || defaultTextColor);
         setBoxColor(settings.boxColor || defaultBoxColor);
       } catch (error) {
@@ -62,7 +64,7 @@ const DataDisplay = () => {
         setIsDataReady(true);
       }
     };
-    
+
     fetchPreview();
   }, []);
 
@@ -72,9 +74,7 @@ const DataDisplay = () => {
       const updatedLink = response.data;
 
       setData((links) =>
-        links.map((link) =>
-          link.id === updatedLink.id ? updatedLink : link,
-        ),
+        links.map((link) => (link.id === updatedLink.id ? updatedLink : link)),
       );
     } catch (error) {
       // The visitor should still be able to open the destination if tracking fails.
@@ -93,10 +93,12 @@ const DataDisplay = () => {
   }
   return (
     <main
-      className="public-preview"
+      className={`public-preview preview-theme-${(themeName || "default-stars").toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
       style={{
         "--text-color": textColor,
+        "--preview-text-color": textColor,
         "--box-color": boxColor,
+        "--preview-box-color": boxColor,
         backgroundImage: themeImage
           ? `linear-gradient(rgba(10, 20, 42, 0.25), rgba(10, 20, 42, 0.25)), url(${themeImage})`
           : undefined,
@@ -111,13 +113,13 @@ const DataDisplay = () => {
           <i className="fa-solid fa-share-nodes"></i>{" "}
         </span>
       </button>
-     
+
       <section className="-mt-12" aria-labelledby="profile-name">
         {/* main content */}
         {setting && (
           <div>
             <img
-              src={setting.image_url || logoKicpaa}
+              src={toBackendUrl(setting.image_url) || logoKicpaa}
               alt="Logo"
               className="h-25 m-auto mt-20"
             />
@@ -149,15 +151,14 @@ const DataDisplay = () => {
             {data.map((link) => (
               <div
                 key={link.id}
-                className="preview-link-card bg-white/25 backdrop-blur-md p-4 rounded-full shadow-md
+                className="preview-link-card backdrop-blur-md p-4 rounded-full shadow-md
                            transition-all duration-300 ease-out
-                           hover:bg-white/35 hover:shadow-xl hover:-translate-y-1
+                           hover:shadow-xl hover:-translate-y-1
                            hover:scale-[1.02] cursor-pointer"
-                style={{ backgroundColor: boxColor }}
               >
                 <div className="relative flex min-h-13 items-center justify-center text-center">
                   <img
-                    src={link.image_url || logoKicpaa}
+                    src={toBackendUrl(link.image_url) || logoKicpaa}
                     alt={link.title}
                     className={`absolute left-0 h-13 w-13 rounded-full object-cover ${
                       !link.image_url ? "hidden" : ""
@@ -186,12 +187,13 @@ const DataDisplay = () => {
             ))}
           </div>
         )}
-
       </section>
       {/* spacing */}
-      <div className='mb-30'></div>
+      <div className="mb-30"></div>
       <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
-        <h2 className='m-auto text-center text-gray-300 font-semiblod text-sm'>Developed by KICPAA IT team</h2>
+      <h2 className="m-auto text-center text-gray-300 font-semiblod text-sm">
+        Developed by KICPAA IT team
+      </h2>
     </main>
   );
 };

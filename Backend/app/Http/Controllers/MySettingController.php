@@ -59,11 +59,14 @@ class MySettingController extends Controller
             'remove_image' => ['sometimes', 'boolean'],
         ]);
 
+        $previousImage = null;
         if ($request->hasFile('image')) {
-            if ($mySetting->image) {
-                Storage::disk('public')->delete($mySetting->image);
+            $previousImage = $mySetting->image;
+            $newImage = $request->file('image')->store(self::IMAGE_DIR, 'public');
+            if ($newImage === false) {
+                return response()->json(['message' => 'The image could not be saved.'], 500);
             }
-            $validated['image'] = $request->file('image')->store(self::IMAGE_DIR, 'public');
+            $validated['image'] = $newImage;
         } elseif ($request->boolean('remove_image')) {
             if ($mySetting->image) {
                 Storage::disk('public')->delete($mySetting->image);
@@ -75,7 +78,12 @@ class MySettingController extends Controller
 
         $mySetting->update($validated);
 
-        return response()->json($mySetting->refresh());
+        $mySetting->refresh();
+        if ($previousImage) {
+            Storage::disk('public')->delete($previousImage);
+        }
+
+        return response()->json($mySetting);
     }
 
     /**

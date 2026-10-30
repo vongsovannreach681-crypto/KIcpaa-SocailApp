@@ -110,8 +110,6 @@ class AddLinkController extends Controller
 
     private function publicImageUrl(string $path): string
     {
-        $url = Storage::disk('public')->url($path);
-
-        return parse_url($url, PHP_URL_PATH) ?: $url;
+        return '/storage/' . ltrim($path, '/');
     }
 }

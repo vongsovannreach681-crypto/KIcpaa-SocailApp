@@ -91,7 +91,7 @@ const ShareModal = ({ isOpen, onClose }) => {
             <span className="share-action-icon share-telegram">➤</span><span>Share on Telegram</span><b>›</b>
           </a>
           <button type="button" className="share-action" onClick={shareInstagram}>
-            <span className="share-action-icon share-instagram">◎</span><span>Share on Instagram</span><b>›</b>
+            <span className="share-action-icon share-instagram"><i class="fa-brands fa-square-instagram"></i></span><span>Share on Instagram</span><b>›</b>
           </button>
           <a className="share-action" href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`} target="_blank" rel="noopener noreferrer">
             <span className="share-action-icon share-facebook">f</span><span>Share on Facebook</span><b>›</b>
